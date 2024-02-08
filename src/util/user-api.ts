@@ -13,3 +13,16 @@ export async function login(user: User){
         throw new Error("Invalid Login");
     }
 }
+
+export async function signup(user: User){
+    const res = await fetch(BASE_URL + "/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Login");
+    }
+}

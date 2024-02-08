@@ -26,7 +26,6 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
             const formJson = Object.fromEntries((formData as any).entries());
             let user = new User("", formJson.email, formJson.password);
             const response = await login(user);
-            console.log("RESPONSE", response);
             if (response?.id){
                 setShowError("none");
                 user = new User(response.name, response.email, response.password, 0, 0, false, response.id);
@@ -61,7 +60,6 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
                     autoFocus
                     required
                     margin="dense"
-                    id="name"
                     name="email"
                     label="Email Address"
                     type="email"
@@ -71,7 +69,6 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
                     autoFocus
                     required
                     margin="dense"
-                    id="name"
                     name="password"
                     label="Password"
                     type="text"
