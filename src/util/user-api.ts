@@ -7,7 +7,6 @@ export async function login(user: User){
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
     })
-    console.log("******************",res);
     if (res.ok) {
         return res.json();
     } else {
