@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import LoginFormModal from "../../components/Modal/LoginFormModal";
+import { User } from "../../../models/User";
 
 type UserPageProps = {
-    setUser: (user: String) => void;
+    setUser: (user: User) => void;
 };
 
 export default function UserPage({ setUser } : UserPageProps){

@@ -2,13 +2,14 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar, Tooltip, IconButton, Typography, Menu, MenuItem, Container } from "@mui/material"
 import image from "../../img/polite_cat.jpg";
+import { User } from "../../../models/User";
 
 const pages = ['Home', 'Plans', 'Metrics'];
 const settings = ['Manage Account', 'Logout'];
 //https://stackoverflow.com/questions/44321326/property-value-does-not-exist-on-type-eventtarget-in-typescript
 
 type NavBarProps = {
-    setUser: (user: String) => void;
+    setUser: (user: User) => void;
 };
 
 export default function NavBar({ setUser }: NavBarProps){
@@ -49,7 +50,7 @@ export default function NavBar({ setUser }: NavBarProps){
                 navigate("/account");
                 break;
             case "LOGOUT":
-                setUser("");
+                setUser(new User());
                 navigate("/");
                 break;
             default:
