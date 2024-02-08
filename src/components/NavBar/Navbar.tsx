@@ -7,7 +7,11 @@ const pages = ['Home', 'Plans', 'Metrics'];
 const settings = ['Manage Account', 'Logout'];
 //https://stackoverflow.com/questions/44321326/property-value-does-not-exist-on-type-eventtarget-in-typescript
 
-export default function NavBar(){
+type NavBarProps = {
+    setUser: (user: String) => void;
+};
+
+export default function NavBar({ setUser }: NavBarProps){
     const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -43,6 +47,10 @@ export default function NavBar(){
                 break;
             case "MANAGE ACCOUNT":
                 navigate("/account");
+                break;
+            case "LOGOUT":
+                setUser("");
+                navigate("/");
                 break;
             default:
                 break;   
