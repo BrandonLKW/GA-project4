@@ -64,7 +64,6 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
     };
 
     const handleListItemClick = (exercise: Exercise) => {
-        console.log(exercise);
         setSelectedExercise(exercise);
     }
 
@@ -102,7 +101,6 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
                     </List>
                     ))}
                 </List>}
-                
             </div>
         </div>
     );

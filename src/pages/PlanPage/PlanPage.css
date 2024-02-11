@@ -2,10 +2,10 @@
     display: grid;
     height: 100vh;
     width: 100%;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas:
-      "col1 col2";
+      "col1 col2 col3";
     grid-gap: 3px;
   }
 
@@ -17,4 +17,9 @@
 .planPageCol2 {
     grid-area: col2;
     display: flex;
+}
+
+.planPageCol3 {
+  grid-area: col3;
+  display: flex;
 }

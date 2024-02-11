@@ -3,11 +3,11 @@ import { Button, FormControl, TextField } from "@mui/material";
 import { Exercise } from  "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
 
-type ExerciseSearchProps = {
+type ExerciseAddProps = {
     selectedExercise: Exercise;
 };
 
-export default function ExerciseAdd({ selectedExercise } : ExerciseSearchProps){
+export default function ExerciseAdd({ selectedExercise } : ExerciseAddProps){
     const [routine, setRoutine] = useState<Routine>(new Routine());
     
     const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
