@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, CircularProgress, FormControl, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { getAllExerciseGroups, getAllExerciseByFilter } from "../../util/plan-service";
 import { Exercise } from  "../../../models/Exercise";
+import "./ExerciseSearch.css";
 
 type ExerciseSearchProps = {
     setSelectedExercise: (exercise: Exercise) => void;
