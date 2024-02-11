@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Box, Checkbox, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormGroup, FormControlLabel, LinearProgress, TextField } from "@mui/material";
+import { Alert, Button, Box, Checkbox, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, LinearProgress, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../util/user-service";
 import { User } from "../../../models/User";

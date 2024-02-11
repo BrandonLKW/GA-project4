@@ -3,6 +3,7 @@ const planRouter = planExpress.Router();
 const planController = require("../controllers/planController");
 
 planRouter.get("/exercises", planController.getAllExercises);
-planRouter.post("/exercises/muscle", planController.getExerciseByMuscleGroup);
+planRouter.get("/exercises/groups", planController.getAllExerciseGroups);
+planRouter.post("/exercises/search", planController.getAllExerciseByFilter);
 
 module.exports = planRouter;
