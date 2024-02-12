@@ -5,9 +5,9 @@ export class User {
     start_height: number = 0;
     start_weight: number = 0;
     is_premium: boolean = false;
-    id: number = 0;
+    user_id: number = 0;
 
-    constructor(name?: string, email?:string, password?:string, start_height?:number, start_weight?:number, is_premium?: boolean, id?: number){
+    constructor(name?: string, email?:string, password?:string, start_height?:number, start_weight?:number, is_premium?: boolean, user_id?: number){
         if (name){
             this.name = name;
         }
@@ -26,8 +26,8 @@ export class User {
         if (is_premium){
             this.is_premium = is_premium;
         }
-        if (id){
-            this.id = id;
+        if (user_id){
+            this.user_id = user_id;
         }
     }
 }

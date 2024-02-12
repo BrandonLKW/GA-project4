@@ -2,9 +2,9 @@ export class Exercise{
     name: string = "";
     muscle_group: string = "";
     description: string = "";
-    id: number = 0;
+    exercise_id: number = 0;
 
-    constructor(name?: string, muscle_group?:string, description?:string, id?: number){
+    constructor(name?: string, muscle_group?:string, description?:string, exercise_id?: number){
         if (name){
             this.name = name;
         }
@@ -14,8 +14,8 @@ export class Exercise{
         if (description){
             this.description = description;
         }
-        if (id){
-            this.id = id;
+        if (exercise_id){
+            this.exercise_id = exercise_id;
         }
     }
 }

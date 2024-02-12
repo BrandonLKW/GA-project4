@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { Button, CircularProgress, FormControl, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { getAllExerciseGroups, getAllExerciseByFilter } from "../../util/plan-service";
 import { Exercise } from  "../../../models/Exercise";
+import { Routine } from  "../../../models/Routine";
 import "./ExerciseSearch.css";
 
 type ExerciseSearchProps = {
     setSelectedExercise: (exercise: Exercise) => void;
+    setSelectedRoutine: (routine: Routine) => void;
 };
 
-export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchProps){
+export default function ExerciseSearch({ setSelectedExercise, setSelectedRoutine } : ExerciseSearchProps){
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const [muscleGroupList, setMuscleGroupList] = useState<string[]>([]);
     const [searchMuscleGroup, setSearchMuscleGroup] = useState<string>("");
@@ -54,7 +56,8 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
             const newSearchList: Exercise[] = [];
             if (response){
                 for (const exercise of response){
-                    newSearchList.push(new Exercise(exercise.name, exercise.muscle_group, exercise.description, exercise.id));
+                    console.log(exercise);
+                    newSearchList.push(new Exercise(exercise.name, exercise.muscle_group, exercise.description, exercise.exercise_id));
                 }
             }
             setExerciseList(newSearchList);
@@ -64,16 +67,15 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
     };
 
     const handleListItemClick = (exercise: Exercise) => {
-        setSelectedExercise(exercise);
+        setSelectedExercise(exercise)
+        setSelectedRoutine(new Routine());
     }
 
     return (
         <div className="exerciseSearch">
-            <div className="exerciseSearchHeader">
-                <h1>Exercise List</h1>
-            </div>
+            <h1 className="exerciseSearchHeader">Search for Exercises</h1>
+            <h2 className="exerciseSearchSubHeader">Filter By:</h2><br/>
             <div className="exerciseSearchBody">
-                <label>Filter By:</label><br/>
                 <FormControl variant="standard">
                     <InputLabel id="group-label">Muscle Group</InputLabel>
                     <Select 
@@ -84,6 +86,8 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
                     </Select>
                     <TextField label="Search by Name..." variant="outlined" value={searchWildcard} onChange={handleWildcardChange}/>
                 </FormControl>
+            </div>
+            <div className="exerciseSearchBody2">
                 <Button onClick={resetSearchFilters}>Reset</Button>
                 <Button onClick={searchFilters}>Search</Button>
             </div>
@@ -93,7 +97,7 @@ export default function ExerciseSearch({ setSelectedExercise } : ExerciseSearchP
                 : 
                 <List>
                     {exerciseList?.map((exercise) => (
-                    <List key={exercise.id}>
+                    <List key={exercise.exercise_id}>
                         <ListItemButton
                             onClick={() => handleListItemClick(exercise)}>
                         <ListItemText primary={exercise.name}/>

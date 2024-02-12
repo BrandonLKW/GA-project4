@@ -10,7 +10,7 @@ import { User } from "../../../models/User";
 
 function App() {
   const [user, setUser] = useState<User>(new User());
-  if (!user.id){
+  if (!user.user_id){
     return(
     <>
       <Routes>
@@ -24,7 +24,7 @@ function App() {
       <NavBar setUser={setUser}/>
       <Routes>
         <Route path="/main" element={<MainPage />}/>
-        <Route path="/plan" element={<PlanPage />}/>
+        <Route path="/plan" element={<PlanPage user={user}/>}/>
         <Route path="/metrics" element={<MetricsPage />}/>
         <Route path="*" element={<MainPage />}/>
       </Routes>

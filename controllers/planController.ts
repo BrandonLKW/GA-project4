@@ -1,8 +1,40 @@
 const plandb = require("../db/index");
 
+const getAllTemplatePlans = async (req, res) => {
+    try {
+        const queryStr = "SELECT * FROM plans WHERE plans.is_template = TRUE";
+        const response = await plandb.query(queryStr, "");
+        res.status(201).json(response.rows);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getAllUserPlans = async (req, res) => {
+    try {
+        const { user_id } = req.body;
+        let queryStr = `SELECT * FROM plans WHERE plans.user_id = ${user_id}`;
+        const response = await plandb.query(queryStr, "");
+        res.status(201).json(response.rows);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getRoutinesByPlan = async (req, res) => {
+    try {
+        const { plan_id } = req.body;
+        let queryStr = `SELECT * FROM routines WHERE routines.plan_id = ${plan_id}`;
+        const response = await plandb.query(queryStr, "");
+        res.status(201).json(response.rows);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 const getAllExercises = async (req, res) => {
     try {
-        const queryStr = "SELECT * FROM exercises"
+        const queryStr = "SELECT * FROM exercises";
         const response = await plandb.query(queryStr, "");
         res.status(201).json(response.rows);
     } catch (error) {
@@ -13,6 +45,17 @@ const getAllExercises = async (req, res) => {
 const getAllExerciseGroups = async (req, res) => {
     try {
         const queryStr = "SELECT DISTINCT muscle_group FROM exercises ORDER BY muscle_group"
+        const response = await plandb.query(queryStr, "");
+        res.status(201).json(response.rows);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getExerciseById = async (req, res) => {
+    try {
+        const { exercise_id } = req.body;
+        const queryStr = `SELECT * FROM exercises WHERE exercises.exercise_id = ${exercise_id}`;
         const response = await plandb.query(queryStr, "");
         res.status(201).json(response.rows);
     } catch (error) {
@@ -47,7 +90,11 @@ const getAllExerciseByFilter = async (req, res) => {
 
 
 module.exports = {
+    getAllTemplatePlans, 
+    getAllUserPlans, 
+    getRoutinesByPlan,
     getAllExercises,
     getAllExerciseGroups,
+    getExerciseById,
     getAllExerciseByFilter,
 };
