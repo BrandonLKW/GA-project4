@@ -25,6 +25,19 @@ export async function getAllUserPlans(user_id: number){
     }
 }
 
+export async function addUserPlan(name: string, user_id: number){
+    const res = await fetch(BASE_URL + "/user/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"name": name, "user_id": user_id}),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
 export async function getRoutinesByPlan(plan_id: number){
     const res = await fetch(BASE_URL + "/routines", {
         method: "POST",

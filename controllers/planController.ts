@@ -21,6 +21,22 @@ const getAllUserPlans = async (req, res) => {
     }
 }
 
+const addUserPlan = async (req, res) => {
+    try {
+        const { name, user_id } = req.body;
+        const queryStr = "INSERT INTO plans(name, is_template, user_id) VALUES ($1, FALSE, $2) returning plan_id;";
+        const queryValues = [name, user_id];
+        const response = await plandb.query(queryStr, queryValues);
+        if (response?.rows[0]){
+            res.status(201).json(response.rows[0]);
+        } else{
+            res.status(500).json({ message: "Error adding Plan" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 const getRoutinesByPlan = async (req, res) => {
     try {
         const { plan_id } = req.body;
@@ -92,6 +108,7 @@ const getAllExerciseByFilter = async (req, res) => {
 module.exports = {
     getAllTemplatePlans, 
     getAllUserPlans, 
+    addUserPlan,
     getRoutinesByPlan,
     getAllExercises,
     getAllExerciseGroups,

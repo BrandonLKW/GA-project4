@@ -5,6 +5,7 @@ const planController = require("../controllers/planController");
 //plans
 planRouter.get("/template", planController.getAllTemplatePlans);
 planRouter.post("/user", planController.getAllUserPlans);
+planRouter.post("/user/add", planController.addUserPlan);
 
 //routines
 planRouter.post("/routines", planController.getRoutinesByPlan);

@@ -1,0 +1,25 @@
+.exercisePlan {
+    display: grid;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-areas:
+      "header" 
+      "body"
+      "footer";
+    grid-gap: 3px;
+  }
+  
+  .exerciseAddHeader {
+    grid-area: header;
+  }
+  
+  .exerciseAddBody{
+    grid-area: body;
+  }
+
+  .exerciseAddFooter{
+    grid-area: footer;
+  }

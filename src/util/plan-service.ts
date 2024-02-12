@@ -10,6 +10,11 @@ export async function getAllUserPlans(user_id: number){
     return res;
 }
 
+export async function addUserPlan(name: string, user_id: number){
+    const res = await planAPI.addUserPlan(name, user_id);
+    return res;
+}
+
 export async function getRoutinesByPlan(plan_id: number){
     const res = await planAPI.getRoutinesByPlan(plan_id);
     return res;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Collapse, List, ListItemButton, ListItemText } from "@mui/material";
+import { Button, Collapse, List, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material"
 import { getAllTemplatePlans, getAllUserPlans, getRoutinesByPlan } from "../../util/plan-service";
 import { Plan } from  "../../../models/Plan";
@@ -7,6 +7,8 @@ import { User } from "../../../models/User";
 import { Exercise } from "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
 import { getExerciseById } from "../../util/plan-api";
+import AddPlanModal from "../Modal/AddPlanModal";
+import "./ExercisePlan.css";
 
 type ExercisePlanProps = {
     user: User;
@@ -16,6 +18,8 @@ type ExercisePlanProps = {
 };
 
 export default function ExercisePlan({ user, setSelectedExercise, setSelectedRoutine, setSelectedPlan } : ExercisePlanProps){
+    const [showAddModal, setShowAddModal] = useState<boolean>(false);
+    const [selectedRoutineItem, setSelectedRoutineItem] = useState<Routine>(new Routine());
     const [planList, setPlanList] = useState<Plan[]>([]);
 
     useEffect(() => {
@@ -29,7 +33,7 @@ export default function ExercisePlan({ user, setSelectedExercise, setSelectedRou
             setPlanList(loadedTemplates.concat(loadedUserPlans));
         }
         loadTemplatePlans();
-    }, []);
+    }, [showAddModal]);
 
     const loadPlanDetails = async (response: any) =>{
         const loadedPlanList: Plan[] = [];
@@ -68,35 +72,53 @@ export default function ExercisePlan({ user, setSelectedExercise, setSelectedRou
         setSelectedPlan(plan);
         setSelectedExercise(new Exercise());
         setSelectedRoutine(new Routine());
+        setSelectedRoutineItem(new Routine());
     }
 
     const handleRoutineItemClick = (routine: Routine) => {
         setSelectedExercise(new Exercise());
         setSelectedRoutine(routine);
+        setSelectedRoutineItem(routine);
+    }
+
+    const handleAddButtonClick = () => {
+        setShowAddModal(true);
     }
 
     return (
-        <div>
-            <List>
-            {planList.map((plan) => (
-                <div>
-                    <ListItemButton onClick={() => handleListItemClick(plan)}>
-                        <ListItemText primary={plan.name} />
-                        {plan.display_routine ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    {plan.routineList.map((routine) => (
-                        <Collapse in={plan.display_routine} timeout="auto">
-                            <List component="div" disablePadding>
-                                <ListItemButton sx={{ pl: 4 }} onClick={() => handleRoutineItemClick(routine)}>
-                                    <ListItemText primary={routine.exercise.name}/>
-                                </ListItemButton>
-                            </List>
-                        </Collapse>
-                    ))}
-                    
-                </div>
-            ))}
-            </List>
+        <div className="exercisePlan">
+            <h1 className="exerciseAddHeader">Plans</h1>
+            <div className="exerciseAddBody">
+                <List>
+                {planList.map((plan) => (
+                    <div>
+                        <ListItemButton 
+                            selected={plan.display_routine} 
+                            onClick={() => handleListItemClick(plan)}>
+                            <ListItemText primary={plan.name} />
+                            {plan.display_routine ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        {plan.routineList.map((routine) => (
+                            <Collapse in={plan.display_routine} timeout="auto">
+                                <List component="div" disablePadding>
+                                    <ListItemButton 
+                                        sx={{ pl: 4 }}  
+                                        selected={selectedRoutineItem.routine_id === routine.routine_id}
+                                        onClick={() => handleRoutineItemClick(routine)}>
+                                        <ListItemText primary={routine.exercise.name}/>
+                                    </ListItemButton>
+                                </List>
+                            </Collapse>
+                        ))}
+                    </div>
+                ))}
+                </List>
+            </div>
+            <div className="exerciseAddFooter">
+                <Button>Delete</Button>
+                <Button onClick={handleAddButtonClick}>Add</Button>
+                <AddPlanModal user={user} showModal={showAddModal} setShowModal={setShowAddModal} setPlanList={setPlanList}/>
+            </div>
         </div>
     );
 }
