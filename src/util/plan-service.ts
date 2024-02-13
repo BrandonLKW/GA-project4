@@ -1,4 +1,5 @@
 import * as planAPI from "./plan-api";
+import { Routine } from "../../models/Routine";
 
 export async function getAllTemplatePlans(){
     const res = await planAPI.getAllTemplatePlans();
@@ -17,6 +18,21 @@ export async function addUserPlan(name: string, user_id: number){
 
 export async function getRoutinesByPlan(plan_id: number){
     const res = await planAPI.getRoutinesByPlan(plan_id);
+    return res;
+}
+
+export async function addUserRoutine(routine: Routine){
+    const res = await planAPI.addUserRoutine(routine);
+    return res;
+}
+
+export async function updateUserRoutine(routine: Routine){
+    const res = await planAPI.updateUserRoutine(routine);
+    return res;
+}
+
+export async function deleteUserRoutine(plan_id: number){
+    const res = await planAPI.deleteUserRoutine(plan_id);
     return res;
 }
 

@@ -1,27 +1,18 @@
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
-import { addUserPlan } from "../../util/plan-service";
-import { Plan } from "../../../models/Plan";
-import { User } from "../../../models/User";
 
 type AddPlanModalProps = {
-    user: User;
+    addPlan: (name: string) => void;
     showModal: boolean;
     setShowModal: (show: boolean) => void;
-    setPlanList: (planList: Plan[]) => void;
 };
 
-export default function AddPlanModal({ user, showModal, setShowModal, setPlanList } : AddPlanModalProps){
+export default function AddPlanModal({ addPlan, showModal, setShowModal } : AddPlanModalProps){
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries((formData as any).entries());
-        const name = formJson.name;
-        const response = await addUserPlan(name, user.user_id);
-        if (response?.plan_id){
-            setShowModal(false);
-            handleClose();
-        }
+        addPlan(formJson.name);
     }
 
     const handleClose = () => {

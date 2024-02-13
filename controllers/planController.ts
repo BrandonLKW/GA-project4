@@ -48,6 +48,55 @@ const getRoutinesByPlan = async (req, res) => {
     }
 }
 
+const addUserRoutine = async (req, res) => {
+    try {
+        console.log(req.body);
+        const { seq, reps, duration, weight, plan_id, exercise_id } = req.body;
+        const queryStr = "INSERT INTO routines(seq, reps, duration, weight, plan_id, exercise_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING routine_id;";
+        const queryValues = [seq, reps, duration, weight, plan_id, exercise_id];
+        const response = await plandb.query(queryStr, queryValues);
+        if (response?.rows[0]){
+            res.status(201).json(response.rows[0]);
+        } else{
+            res.status(500).json({ message: "Error adding Routine" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const updateUserRoutine = async (req, res) => {
+    try {
+        const { seq, reps, duration, weight, routine_id } = req.body;
+        const queryStr = "UPDATE routines SET seq = $1, reps = $2, duration = $3, weight = $4 WHERE routine_id = $5 RETURNING routine_id;";
+        const queryValues = [seq, reps, duration, weight, routine_id];
+        const response = await plandb.query(queryStr, queryValues);
+        if (response?.rows[0]){
+            res.status(201).json(response.rows[0]);
+        } else{
+            res.status(500).json({ message: "Error Updating Routine" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const deleteUserRoutine = async (req, res) => {
+    try {
+        const { routine_id } = req.body;
+        const queryStr = "DELETE FROM routine WHERE routine_id = $1 RETURNING routine_id";
+        const queryValues = [routine_id];
+        const response = await plandb.query(queryStr, queryValues);
+        if (response?.rows[0]){
+            res.status(201).json(response.rows[0]);
+        } else{
+            res.status(500).json({ message: "Error Updating Routine" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 const getAllExercises = async (req, res) => {
     try {
         const queryStr = "SELECT * FROM exercises";
@@ -108,10 +157,13 @@ const getAllExerciseByFilter = async (req, res) => {
 module.exports = {
     getAllTemplatePlans, 
     getAllUserPlans, 
-    addUserPlan,
-    getRoutinesByPlan,
-    getAllExercises,
-    getAllExerciseGroups,
-    getExerciseById,
+    addUserPlan, 
+    getRoutinesByPlan, 
+    addUserRoutine, 
+    updateUserRoutine, 
+    deleteUserRoutine, 
+    getAllExercises, 
+    getAllExerciseGroups, 
+    getExerciseById, 
     getAllExerciseByFilter,
 };

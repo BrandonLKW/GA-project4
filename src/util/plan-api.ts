@@ -1,3 +1,5 @@
+import { Routine } from "../../models/Routine";
+
 const BASE_URL = "/api/plan";
 
 export async function getAllTemplatePlans(){
@@ -43,6 +45,45 @@ export async function getRoutinesByPlan(plan_id: number){
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({"plan_id": plan_id}),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
+export async function addUserRoutine(routine: Routine){
+    const res = await fetch(BASE_URL + "/routines/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(routine),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
+export async function updateUserRoutine(routine: Routine){
+    const res = await fetch(BASE_URL + "/routines/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(routine),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
+export async function deleteUserRoutine(routine_id: number){
+    const res = await fetch(BASE_URL + "/routines/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"plan_id": routine_id}),
     })
     if (res.ok) {
         return res.json();

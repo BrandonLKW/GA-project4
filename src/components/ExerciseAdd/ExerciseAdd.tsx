@@ -9,9 +9,10 @@ type ExerciseAddProps = {
     selectedExercise: Exercise;
     selectedRoutine: Routine;
     selectedPlan: Plan;
+    manageRoutine: (action: string, routine: Routine) => void;
 };
 
-export default function ExerciseAdd({ selectedExercise, selectedRoutine, selectedPlan } : ExerciseAddProps){
+export default function ExerciseAdd({ selectedExercise, selectedRoutine, selectedPlan, manageRoutine } : ExerciseAddProps){
     const [workingRoutine, setWorkingRoutine] = useState<Routine>(new Routine());
     const [action, setAction] = useState<string>("");
     
@@ -23,6 +24,8 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
             const newRoutine = new Routine();
             const exercise = Object.assign({}, selectedExercise);
             newRoutine.exercise = exercise;
+            newRoutine.exercise_id = selectedExercise.exercise_id;
+            newRoutine.plan_id = selectedPlan.plan_id;
             setWorkingRoutine(newRoutine);
             setAction("Add");
         }
@@ -34,25 +37,28 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
         });
     };
 
-    const resetRoutine = () => {
+    const handleResetButtonClick = () => {
         const resetValues = {weight: 0, duration: 0, reps: 0};
         setWorkingRoutine((routine) => {
             return {...routine, ...resetValues};
         });
     }
 
-    const addRoutine = () => {
-
+    const handleAddButtonClick = () => {
+        manageRoutine(action, workingRoutine);
     }
-    
+
     return (
         <>
         {(selectedExercise.exercise_id === 0 && selectedRoutine.routine_id === 0) 
         ? 
-        <h1>Select Exercise</h1> 
+        <div>
+            <h1>Select an Exercise to Add ---&gt;</h1> 
+            <h1>&lt;--- Or Select a Routine to Update</h1> 
+        </div>
         : 
         <div className="exerciseAdd">
-            <h1 className="exerciseAddHeader">{action} to {selectedPlan.name}</h1>
+            <h1 className="exerciseAddHeader">{action} to Plan: {selectedPlan.name}</h1>
             <h2 className="exerciseAddSubHeader">{workingRoutine.exercise.name}</h2>
             <label className="exerciseAddDescription">{workingRoutine.exercise.description}</label>
             <div className="exerciseAddBody">
@@ -63,8 +69,8 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
                 </FormControl>
             </div>
             <div className="exerciseAddFooter">
-                <Button onClick={resetRoutine}>Clear</Button>
-                <Button onClick={addRoutine}>Add</Button>
+                <Button onClick={handleResetButtonClick}>Clear</Button>
+                <Button onClick={handleAddButtonClick}>{action.toUpperCase()}</Button>
             </div>
         </div>}
         </>
