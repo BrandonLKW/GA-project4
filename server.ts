@@ -6,6 +6,7 @@ dotenv.config();
 const path = require("path");
 const userRouter = require("./routes/userRouter");
 const planRouter = require("./routes/planRouter");
+const workoutRouter = require("./routes/workoutRouter");
 
 const server: Express = express();
 
@@ -19,6 +20,7 @@ server.get("/test", (_req: Request, res: Response) => {
 });
 server.use("/api/user", userRouter);
 server.use("/api/plan", planRouter);
+server.use("/api/workout", workoutRouter);
 
 //listen block
 const port = process.env.PORT || 3000;

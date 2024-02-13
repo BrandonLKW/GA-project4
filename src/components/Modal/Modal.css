@@ -1,0 +1,31 @@
+.addNewWorkout {
+    display: grid;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "plans routines"
+        "dates routines";
+    grid-gap: 3px;
+}
+
+.addNewWorkoutPlans {
+    grid-area: plans;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.addNewWorkoutRoutines {
+    grid-area: routines;
+    overflow: auto;
+}
+
+.addNewWorkoutDates {
+    grid-area: dates;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
