@@ -31,6 +31,7 @@ export default function MainPage({ user, planList } : MainPageProps){
             //Confirmation msg
         }
         setShowAddWorkoutButton(false);
+        setViewDate(newWorkoutList[0].workout_date); //set calendar view to first date to refresh components
     };
 
     return(

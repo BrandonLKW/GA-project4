@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { Route, Routes } from "react-router-dom";
 import { getAllTemplatePlans, getAllUserPlans, getRoutinesByPlan, getExerciseById } from "../../util/plan-service";
 import './App.css'
@@ -12,10 +12,12 @@ import { Exercise } from "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
 import { Plan } from "../../../models/Plan";
 
+export const UserContext = createContext(new User());
+
 function App() {
   const [user, setUser] = useState<User>(new User());
   const [planList, setPlanList] = useState<Plan[]>([]);
-
+  
   useEffect(() => {
       const loadTemplatePlans = async () => {
           //Load templates
@@ -66,15 +68,17 @@ function App() {
     );
   } else{
     return (
-    <div className="appBody">
-      <NavBar setUser={setUser}/>
-      <Routes>
-        <Route path="/main" element={<MainPage user={user} planList={planList}/>}/>
-        <Route path="/plan" element={<PlanPage user={user} planList={planList} setPlanList={setPlanList}/>}/>
-        <Route path="/metrics" element={<MetricsPage />}/>
-        {/* <Route path="*" element={<MainPage />}/> */}
-      </Routes>
-    </div>
+    <UserContext.Provider value={user}>
+      <div className="appBody">
+        <NavBar setUser={setUser}/>
+        <Routes>
+          <Route path="/main" element={<MainPage user={user} planList={planList}/>}/>
+          <Route path="/plan" element={<PlanPage user={user} planList={planList} setPlanList={setPlanList}/>}/>
+          <Route path="/metrics" element={<MetricsPage />}/>
+          {/* <Route path="*" element={<MainPage />}/> */}
+        </Routes>
+      </div>
+    </UserContext.Provider>
     )
   }
 }
