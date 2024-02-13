@@ -3,20 +3,14 @@
     height: 100vh;
     max-height: 100vh;
     width: 100%;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr 9fr;
     grid-template-areas:
-        "sidepanel header" 
-        "sidepanel body";
+        "header" 
+        "body";
     grid-gap: 3px;
 }
 
-.calendarSidePanel {
-    grid-area: sidepanel;
-    align-items: center;
-    text-align: center;
-}
-  
 .calendarHeader {
     grid-area: header;
     background-color: none;

@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, FormControl, TextField } from "@mui/material";
 import CalendarDayBox from "./CalendarDayBox";
 import "./Calendar.css";
-import MonthSpinner from "../MonthSpinner/MonthSpinner";
 
 type CalendarProps = {
-    
+    viewDate: Date;
 };
 
-export default function Calendar({  } : CalendarProps){
-    const [viewDate, setViewDate] = useState<Date>(new Date());
+export default function Calendar({ viewDate } : CalendarProps){
     const [calendarDays, setCalendarDays] = useState<Date[]>([]);
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     
@@ -32,10 +29,6 @@ export default function Calendar({  } : CalendarProps){
 
     return (
         <div className="calendar">
-            <div className="calendarSidePanel">
-                <MonthSpinner viewDate={viewDate} setViewDate={setViewDate}/>
-                <Button>Add Workout</Button>
-            </div>
             <div className="calendarHeader">
                 {weekdays.map((day) => (<h3>{day}</h3>))}
             </div>
