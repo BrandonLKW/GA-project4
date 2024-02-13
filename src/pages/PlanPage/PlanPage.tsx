@@ -4,18 +4,16 @@ import ExerciseSearch from "../../components/ExerciseSearch/ExerciseSearch";
 import ExerciseAdd from "../../components/ExerciseAdd/ExerciseAdd";
 import ExercisePlan from "../../components/ExercisePlan/ExercisePlan";
 import { Exercise } from  "../../../models/Exercise";
-import { User } from "../../../models/User";
 import { Plan } from "../../../models/Plan";
 import { Routine } from "../../../models/Routine";
 import "./PlanPage.css";
 
 type PlanPageProps = {
-    user: User;
     planList: Plan[];
     setPlanList: (planList: Plan[]) => void;
 };
 
-export default function PlanPage({ user, planList, setPlanList } : PlanPageProps){
+export default function PlanPage({ planList, setPlanList } : PlanPageProps){
     const [selectedExercise, setSelectedExercise] = useState<Exercise>(new Exercise());
     const [selectedRoutine, setSelectedRoutine] = useState<Routine>(new Routine());
     const [selectedPlan, setSelectedPlan] = useState<Plan>(new Plan());
@@ -77,7 +75,6 @@ export default function PlanPage({ user, planList, setPlanList } : PlanPageProps
         <div className="planPage">
             <div className="planPageCol1">
                 <ExercisePlan 
-                    user={user} 
                     planList={planList} 
                     setPlanList={setPlanList} 
                     setSelectedExercise={setSelectedExercise} 

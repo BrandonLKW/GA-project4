@@ -72,8 +72,8 @@ function App() {
       <div className="appBody">
         <NavBar setUser={setUser}/>
         <Routes>
-          <Route path="/main" element={<MainPage user={user} planList={planList}/>}/>
-          <Route path="/plan" element={<PlanPage user={user} planList={planList} setPlanList={setPlanList}/>}/>
+          <Route path="/main" element={<MainPage planList={planList}/>}/>
+          <Route path="/plan" element={<PlanPage planList={planList} setPlanList={setPlanList}/>}/>
           <Route path="/metrics" element={<MetricsPage />}/>
           {/* <Route path="*" element={<MainPage />}/> */}
         </Routes>

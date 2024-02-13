@@ -1,22 +1,22 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../App/App";
 import { Button } from "@mui/material";
 import { addWorkouts } from "../../util/workout-service";
 import Calendar from "../../components/Calendar/Calendar";
 import MonthSpinner from "../../components/MonthSpinner/MonthSpinner";
 import AddWorkoutModal from "../../components/Modal/AddWorkoutModal";
-import { User } from "../../../models/User";
 import { Plan } from "../../../models/Plan";
 import { Workout } from "../../../models/Workout";
 import "./MainPage.css";
 
 type MainPageProps = {
-    user: User;
     planList: Plan[];
 };
 
-export default function MainPage({ user, planList } : MainPageProps){
+export default function MainPage({ planList } : MainPageProps){
     const [showAddWorkoutButton, setShowAddWorkoutButton] = useState<boolean>(false);
     const [viewDate, setViewDate] = useState<Date>(new Date());
+    const user = useContext(UserContext);
 
     const handleAddWorkoutButton = () => {
         setShowAddWorkoutButton(true);

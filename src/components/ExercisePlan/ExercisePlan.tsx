@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../pages/App/App";
 import { Button, Collapse, List, ListItemButton, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material"
 import { addUserPlan,  } from "../../util/plan-service";
 import { Plan } from  "../../../models/Plan";
-import { User } from "../../../models/User";
 import { Exercise } from "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
 import AddPlanModal from "../Modal/AddPlanModal";
 import "./ExercisePlan.css";
 
 type ExercisePlanProps = {
-    user: User;
     planList: Plan[];
     setPlanList: (planList: Plan[]) => void;
     setSelectedExercise: (exercise: Exercise) => void;
@@ -19,8 +18,9 @@ type ExercisePlanProps = {
     setSelectedPlan: (plan: Plan) => void;
 };
 
-export default function ExercisePlan({ user, planList, setPlanList, setSelectedExercise, selectedRoutine, setSelectedRoutine, setSelectedPlan } : ExercisePlanProps){
+export default function ExercisePlan({ planList, setPlanList, setSelectedExercise, selectedRoutine, setSelectedRoutine, setSelectedPlan } : ExercisePlanProps){
     const [showAddModal, setShowAddModal] = useState<boolean>(false);
+    const user = useContext(UserContext);
     
     const handleListItemClick = (plan: Plan) => {
         setPlanList(planList.map((prevPlan) => {
