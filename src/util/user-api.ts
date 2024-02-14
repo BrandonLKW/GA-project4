@@ -23,6 +23,6 @@ export async function signup(user: User){
     if (res.ok) {
         return res.json();
     } else {
-        throw new Error("Invalid Login");
+        throw new Error("Invalid Signup");
     }
 }
