@@ -18,6 +18,22 @@ const getWorkoutsByDateRange = async (req, res) => {
     }
 }
 
+const getWorkoutRoutinesByWorkout = async (req, res) => {
+    try {
+        const { workout_id } = req.body;
+        const queryStr = "SELECT * FROM workout_routines INNER JOIN exercises ON exercises.exercise_id = workout_routines.exercise_id WHERE workout_routines.workout_id = $1";
+        const queryValues = [workout_id];
+        const response = await workoutdb.query(queryStr, queryValues);
+        if (response?.rows){
+            res.status(201).json(response.rows);
+        } else{
+            res.status(500).json({ message: "No Rows found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 const addWorkouts = async (req, res) => {
     try {
         for (const workout of req.body){
@@ -48,5 +64,6 @@ const addWorkouts = async (req, res) => {
 
 module.exports = {
     getWorkoutsByDateRange,
+    getWorkoutRoutinesByWorkout,
     addWorkouts,
 };

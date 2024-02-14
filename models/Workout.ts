@@ -9,6 +9,7 @@ export class Workout {
     workout_id: number = 0;
     user_id: number = 0;
     routineList: WorkoutRoutine[] = [];
+    display_workout: boolean = false;
 
     constructor(workout_date?: Date, body_weight?:number, status?:string, notes?:string, plan_name?:string, workout_id?: number, user_id?: number){
         if (workout_date){

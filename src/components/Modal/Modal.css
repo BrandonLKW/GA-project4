@@ -29,3 +29,36 @@
     flex-direction: column;
     justify-content: space-around;
 }
+
+.viewWorkout {
+    display: grid;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2fr;
+    grid-template-areas:
+        "plans routinesTitle"
+        "plans routinesBody";
+    grid-gap: 3px;
+}
+
+.viewWorkoutPlans {
+    grid-area: plans;
+}
+
+.viewWorkoutRoutinesTitle {
+    grid-area: routinesTitle;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: auto;
+}
+
+.viewWorkoutRoutinesBody {
+    grid-area: routinesBody;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: auto;
+}
