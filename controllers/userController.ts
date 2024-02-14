@@ -39,6 +39,15 @@ const login = async (req, res) => {
 const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        //Check if existing email
+        const queryEmailStr = "SELECT user_id FROM users WHERE users.email = $1;";
+        const queryEmailValues = [email];
+        const emailResponse = await db.query(queryEmailStr, queryEmailValues);
+        if (emailResponse?.rows[0]?.user_id){
+            res.status(204).json({ message: "Email already exists." });
+            return;
+        }
+        //Hash password and add 
         const updatedPassword = await hashPassword(password);
         const queryStr = "INSERT INTO users(name, email, password) VALUES ($1, $2, $3) returning user_id;";
         const queryValues = [name, email, updatedPassword];

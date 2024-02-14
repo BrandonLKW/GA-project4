@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Alert, Button, Box, Checkbox, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, LinearProgress, TextField } from "@mui/material";
+import { Alert, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, LinearProgress, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../util/user-service";
 import { User } from "../../../models/User";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 type SignupFormModalProps = {
     showModal: boolean;
@@ -11,12 +13,11 @@ type SignupFormModalProps = {
 };
 
 export default function SignupFormModal({ showModal, setShowModal, setUser } : SignupFormModalProps){
-    const [enablePremium, setEnablePremium] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showLoading, setShowLoading] = useState<boolean>(false);
+    const [showError, setShowError] = useState<boolean>(false);
+    const [errorMsg, setErrorMsg] = useState<string>("Error during Sign Up, please check your details and try again.");
     const navigate = useNavigate();
-
-    const onClickPremium = () => {
-        setEnablePremium(!enablePremium);
-    }
 
     const handleClose = () => {
         setShowModal(false);
@@ -24,9 +25,18 @@ export default function SignupFormModal({ showModal, setShowModal, setUser } : S
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setShowError(false);
         const checkSignup = async () => {
+            setShowLoading(true);
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
+            //Do basic input checks
+            if (formJson.password !== formJson.confirm_password){
+                setShowError(true);
+                setErrorMsg("Password and Confirm Password do not match. Please check and try again.")
+                return;
+            }
+            //Send post request
             let user = new User(formJson.name, formJson.email, formJson.password);
             const response = await signup(user);
             if (response?.user_id){
@@ -34,10 +44,21 @@ export default function SignupFormModal({ showModal, setShowModal, setUser } : S
                 setUser(user);
                 handleClose();
                 navigate("/main");
-            } 
+            } else {
+                throw response.message;
+            }
         }
-        checkSignup();
+        try {
+            await checkSignup();
+        } catch (error) {
+            setShowError(true);
+        }
+        setShowLoading(false);
     }
+
+    const handlePassTypeClick = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
         <>
@@ -77,46 +98,29 @@ export default function SignupFormModal({ showModal, setShowModal, setUser } : S
                         margin="dense"
                         name="password"
                         label="Password"
-                        type="text"
+                        type={showPassword ? "text" : "password"}
                         fullWidth
-                        variant="standard"/>
+                        variant="standard" 
+                        InputProps={showPassword ? {endAdornment: <VisibilityOffIcon onClick={handlePassTypeClick}/>} : {endAdornment: <VisibilityIcon onClick={handlePassTypeClick}/>}}/>
                     <TextField
                         autoFocus
                         required
                         margin="dense"
                         name="confirm_password"
                         label="Confirm Password"
-                        type="text"
+                        type={showPassword ? "text" : "password"}
                         fullWidth
-                        variant="standard"/>
-                    <FormControlLabel control={<Checkbox value={enablePremium} onClick={onClickPremium}/>} label="Sign up for Premium? (You can do this later as well)" />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        name="cardnum"
-                        label="Card Number"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        disabled={!enablePremium}/>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        name="cvv"
-                        label="CVV Number"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        disabled={!enablePremium}/>
+                        variant="standard" 
+                        InputProps={showPassword ? {endAdornment: <VisibilityOffIcon onClick={handlePassTypeClick}/>} : {endAdornment: <VisibilityIcon onClick={handlePassTypeClick}/>}}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
                     <Button type="submit">Sign Up</Button>
                 </DialogActions>
-                <Alert variant="outlined" severity="error" sx={{display: "none"}}>
-                    Error during Sign Up, please check your details and try again.
+                <Alert variant="outlined" severity="error" sx={{display: showError ? "" : "none"}}>
+                    {errorMsg}
                 </Alert>
-                <Box sx={{ width: '100%', display: "none"}}>
+                <Box sx={{ width: '100%', display: showLoading ? "" : "none"}}>
                     <LinearProgress/>
                 </Box>
             </Dialog>

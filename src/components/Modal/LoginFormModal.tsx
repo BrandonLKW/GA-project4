@@ -3,6 +3,8 @@ import { Alert, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentTe
 import { useNavigate } from "react-router-dom";
 import { login } from "../../util/user-service";
 import { User } from "../../../models/User";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 type LoginFormModalProps = {
     showModal: boolean;
@@ -11,8 +13,9 @@ type LoginFormModalProps = {
 };
 
 export default function LoginFormModal({ showModal, setShowModal, setUser } : LoginFormModalProps){
-    const [showLoading, setShowLoading] = useState<string>("none");
-    const [showError, setShowError] = useState<string>("none");
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showLoading, setShowLoading] = useState<boolean>(false);
+    const [showError, setShowError] = useState<boolean>(false);
     const navigate = useNavigate();
     const handleClose = () => {
         setShowModal(false);
@@ -20,14 +23,14 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setShowError(false);
         const checkLogin = async () => {
-            setShowLoading("");
+            setShowLoading(true);
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
             let user = new User("", formJson.email, formJson.password);
             const response = await login(user);
             if (response?.user_id){
-                setShowError("none");
                 user = new User(response.name, response.email, response.password, 0, 0, false, response.user_id);
                 setUser(user);
                 handleClose();
@@ -37,10 +40,14 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
         try {
             await checkLogin();
         } catch (error) {
-            setShowError("");
+            setShowError(true);
         }
-        setShowLoading("none");
+        setShowLoading(false);
     }
+
+    const handlePassTypeClick = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
     <>
@@ -71,18 +78,19 @@ export default function LoginFormModal({ showModal, setShowModal, setUser } : Lo
                     margin="dense"
                     name="password"
                     label="Password"
-                    type="text"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
-                    variant="standard"/>
+                    variant="standard"
+                    InputProps={showPassword ? {endAdornment: <VisibilityOffIcon onClick={handlePassTypeClick}/>} : {endAdornment: <VisibilityIcon onClick={handlePassTypeClick}/>}}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit">Log In</Button>
             </DialogActions>
-            <Alert variant="outlined" severity="error" sx={{display: showError}}>
+            <Alert variant="outlined" severity="error" sx={{display: showError ? "" : "none"}}>
                 Error during Login, please check your details and try again.
             </Alert>
-            <Box sx={{ width: '100%', display: showLoading}}>
+            <Box sx={{ width: '100%', display: showLoading ? "" : "none"}}>
                 <LinearProgress/>
             </Box>
         </Dialog>
