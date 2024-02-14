@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../pages/App/App";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
 import 'dayjs/locale/en-sg';
@@ -60,7 +60,6 @@ export default function CalendarDayBox({ date } : CalendarDayBoxProps){
                     }
                     newWorkoutList.push(newWorkout);
                 }
-                console.log(newWorkoutList);
                 setWorkoutList(newWorkoutList);
             }
         };

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, List, ListItemButton, ListItemText, TextField, Typography } from "@mui/material";
 import { Workout } from "../../../models/Workout";
-import { WorkoutRoutine } from "../../../models/WorkoutRoutine";
 
 type ViewWorkoutModalProps = {
     workoutList: Workout[];
@@ -12,7 +11,6 @@ type ViewWorkoutModalProps = {
 export default function ViewWorkoutModal({ workoutList, showModal, setShowModal } : ViewWorkoutModalProps){
     const [selectedWorkout, setSelectedWorkout] = useState<Workout>(new Workout());
     const [loadedWorkoutList, setLoadedWorkoutList] = useState<Workout[]>([]);
-    const [loadedRoutineList, setLoadedRoutineList] = useState<WorkoutRoutine[]>([]);
 
     useEffect(() => {
         setLoadedWorkoutList([...workoutList]);
@@ -38,7 +36,6 @@ export default function ViewWorkoutModal({ workoutList, showModal, setShowModal 
             return prev;
         }));
         setSelectedWorkout(workout);
-        setLoadedRoutineList(workout.routineList);
     }
 
     return (

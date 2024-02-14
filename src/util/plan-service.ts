@@ -36,6 +36,11 @@ export async function deleteUserRoutine(plan_id: number){
     return res;
 }
 
+export async function getAllExercises(){
+    const res = await planAPI.getAllExercises();
+    return res;
+}
+
 export async function getAllExerciseGroups(){
     const res = await planAPI.getAllExerciseGroups();
     return res;

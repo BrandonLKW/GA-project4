@@ -34,6 +34,70 @@ const getWorkoutRoutinesByWorkout = async (req, res) => {
     }
 }
 
+const getBmiDataByFilters = async (req, res) => {
+    try {
+        const { startdate, enddate, user_id } = req.body;
+        let queryStr = "SELECT day, COALESCE(average_weight, 0) FROM generate_series($1::date, $2::date, '1 day'::interval) AS day ";
+        queryStr += "LEFT JOIN (SELECT workout_date, AVG(body_weight)::numeric(10,2) as average_weight FROM workouts ";
+        queryStr += "WHERE workout_date >= $1 AND workout_date <= $2 AND user_id = $3 ";
+        queryStr += "GROUP BY workout_date) workout on workout.workout_date = day ";
+        const queryValues = [startdate, enddate, user_id];
+        const response = await workoutdb.query(queryStr, queryValues);
+        if (response?.rows){
+            res.status(201).json(response.rows);
+        } else{
+            res.status(500).json({ message: "No Rows found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getExerciseDataByFilters = async (req, res) => {
+    try {
+        const { startdate, enddate, user_id, exercise_id } = req.body;
+        let queryStr = "SELECT workouts.workout_date, workout_routines.weight, SUM(workout_routines.reps) AS rep_sum FROM workout_routines ";
+        queryStr += "INNER JOIN workouts ON workouts.workout_id = workout_routines.workout_id ";
+        queryStr += "WHERE workout_routines.workout_id IN ( ";
+        queryStr += "SELECT workout_id FROM workouts ";
+        queryStr += "WHERE workout_date >= $1 ";
+        queryStr += "AND workout_date <= $2 ";
+        queryStr += "AND user_id = $3 ";
+        queryStr += ") AND workout_routines.exercise_id = $4 ";
+        queryStr += "GROUP BY workouts.workout_date, workout_routines.weight";
+        const queryValues = [startdate, enddate, user_id, exercise_id];
+        const response = await workoutdb.query(queryStr, queryValues);
+        if (response?.rows){
+            res.status(201).json(response.rows);
+        } else{
+            res.status(500).json({ message: "No Rows found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const getDurationDataByFilters = async (req, res) => {
+    try {
+        const { startdate, enddate, user_id } = req.body;
+        let queryStr = "SELECT day, COALESCE(average_duration, 0) FROM generate_series($1::date, $2::date, '1 day'::interval) AS day ";
+        queryStr += "LEFT JOIN (SELECT workouts.workout_date, AVG(workout_routines.duration)::numeric(10,2) as average_duration FROM workout_routines ";
+        queryStr += "INNER JOIN workouts ON workouts.workout_id = workout_routines.workout_id ";
+        queryStr += "WHERE workout_routines.workout_id IN ( ";
+        queryStr += "SELECT workout_id FROM workouts WHERE workout_date >= $1 AND workout_date <= $2 AND user_id = $3 )";
+        queryStr += "GROUP BY workouts.workout_date) eva ON eva.workout_date = day ";
+        const queryValues = [startdate, enddate, user_id];
+        const response = await workoutdb.query(queryStr, queryValues);
+        if (response?.rows){
+            res.status(201).json(response.rows);
+        } else{
+            res.status(500).json({ message: "No Rows found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 const addWorkouts = async (req, res) => {
     try {
         for (const workout of req.body){
@@ -65,5 +129,8 @@ const addWorkouts = async (req, res) => {
 module.exports = {
     getWorkoutsByDateRange,
     getWorkoutRoutinesByWorkout,
+    getBmiDataByFilters,
+    getExerciseDataByFilters,
+    getDurationDataByFilters,
     addWorkouts,
 };

@@ -92,6 +92,18 @@ export async function deleteUserRoutine(routine_id: number){
     }
 }
 
+export async function getAllExercises(){
+    const res = await fetch(BASE_URL + "/exercises", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
 export async function getAllExerciseGroups(){
     const res = await fetch(BASE_URL + "/exercises/groups", {
         method: "GET",
