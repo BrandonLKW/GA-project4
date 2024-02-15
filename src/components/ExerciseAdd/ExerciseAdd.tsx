@@ -56,12 +56,12 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
         ? 
         <div className="exerciseAddEmpty">
             <div className="exerciseAddEmptyItem">
-                <ArrowCircleLeftIcon />
+                <ArrowCircleRightIcon />
                 <Typography variant="h4">Select an Exercise to Add</Typography>
             </div>
             <div className="exerciseAddEmptyItem">
                 <Typography variant="h4">Select a Routine to Update</Typography>
-                <ArrowCircleRightIcon />
+                <ArrowCircleLeftIcon />
             </div>
         </div>
         : 

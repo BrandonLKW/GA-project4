@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../App/App";
+import { Typography } from "@mui/material";
 import dayjs, { Dayjs } from 'dayjs';
 import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
@@ -12,7 +13,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default function MetricsPage(){
-    const [lineChartDisplay, setLineChartDisplay] = useState<string>("hideChart");
     const [lineXAxis, setLineXAxis] = useState<string[]>(["0"]);
     const [lineSeries, setLineSeries] = useState<number[]>([0]);
     const [lineLabel, setLineLabel] = useState<string>("");
@@ -22,14 +22,12 @@ export default function MetricsPage(){
         const response = await getBmiDataByFilters(startDate.tz("Asia/Kuala_Lumpur").format("YYYY-MM-DD"), endDate.tz("Asia/Kuala_Lumpur").format("YYYY-MM-DD"), user.user_id);
         await loadLineChart(response);
         setLineLabel("Weight");
-        setLineChartDisplay("showChart");
     };
 
     const loadTrackDuration = async (startDate: Dayjs, endDate: Dayjs) => {
         const response = await getDurationDataByFilters(startDate.tz("Asia/Kuala_Lumpur").format("YYYY-MM-DD"), endDate.tz("Asia/Kuala_Lumpur").format("YYYY-MM-DD"), user.user_id);
         await loadLineChart(response);
         setLineLabel("Exercise Duration");
-        setLineChartDisplay("showChart");
     }
 
     const loadLineChart = async (response: any) => {
@@ -62,13 +60,19 @@ export default function MetricsPage(){
                 <MetricsSearch loadTrackBmi={loadTrackBmi} loadTrackDuration={loadTrackDuration}/>
             </div>
             <div className="metricspagecol2">
-                <div className={lineChartDisplay} >
+                {lineLabel ? 
+                <div>
                     <LineChart 
                     xAxis={[{ scaleType: 'point', data: lineXAxis }]} 
                     series={[{ data: lineSeries, label: lineLabel }]} 
                     width={500} 
                     height={300}/>
-                </div>
+                </div> 
+                :
+                <div>
+                    <Typography variant="h4">Select a Date range and action to load some statistics!</Typography>
+                </div> }
+                
             </div>
         </div>
     );

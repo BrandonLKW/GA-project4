@@ -1,9 +1,12 @@
 .metricspage {
     display: grid;
     height: 100vh;
-    max-height: 100vh;
     width: 100%;
-    grid-template-columns: 1fr 2fr;
+    max-height: 100vh;
+    max-width: 80vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas:
         "col1 col2";
@@ -12,6 +15,7 @@
 
 .metricspagecol1 {
     grid-area: col1;
+    margin-right: 2.5vw;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -20,6 +24,12 @@
 
 .metricspagecol2 {
     grid-area: col2;
+    margin-left: 2.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 .hideChart {

@@ -43,8 +43,8 @@ export default function MetricsSearch({ loadTrackBmi, loadTrackDuration } : Metr
                         }
                     }}/>
             </LocalizationProvider>
-            <Button onClick={handleBmiClick}>Track BMI</Button>
-            <Button onClick={handleDurationClick}>Track Workout Duration</Button>
+            <Button variant="contained" onClick={handleBmiClick}>Track Body Weight</Button>
+            <Button variant="contained" onClick={handleDurationClick}>Track Workout Duration</Button>
         </div>
     );
 }

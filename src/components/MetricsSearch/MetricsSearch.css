@@ -1,6 +1,7 @@
 .metricssearchbody {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 0.5vw;
     overflow: auto;
 }
