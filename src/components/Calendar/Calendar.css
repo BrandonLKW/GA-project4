@@ -1,7 +1,6 @@
 .calendar {
     display: grid;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100%;
     width: 100%;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 9fr;
@@ -19,13 +18,44 @@
     grid-template-rows: 1fr;
     align-items: center;
     text-align: center;
+    column-gap: 1em;
 }
 
 .calendarBody {
     grid-area: body;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 1em;
+}
+
+.calendarDayBox {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "title ." 
+        "complete pending";
+    border-style: solid;
+    border-color: blueviolet;
+    border-radius: 16px;
+    border-width: 2px;
+}
+
+.calendarDayBoxTitle{
+    grid-area: title;
+}
+
+.calendarDayBoxComplete{
+    grid-area: complete;
+}
+
+.calendarDayBoxPending{
+    grid-area: pending;
 }
 
 .hidden{

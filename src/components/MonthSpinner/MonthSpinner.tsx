@@ -1,5 +1,5 @@
 import "./MonthSpinner.css";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 type MonthSpinnerProps = {
     viewDate: Date;
@@ -27,14 +27,13 @@ export default function MonthSpinner({ viewDate, setViewDate } : MonthSpinnerPro
 
     return (
         <div className="spinnerBody">
-            <Button onClick={minusMonth}>
+            <Typography className="spinnerText" variant="h4">
+                {viewDate.toLocaleDateString("default", { month: "long" })}{" "}{viewDate.getFullYear()}
+            </Typography>
+            <Button className="spinnerLeftBtn" onClick={minusMonth}>
                 &lt;
             </Button>
-            <h1>
-                {viewDate.toLocaleDateString("default", { month: "long" })}{" "}
-                {viewDate.getFullYear()}
-            </h1>
-            <Button onClick={plusMonth}>
+            <Button className="spinnerRightBtn" onClick={plusMonth}>
                 &gt;
             </Button>
         </div>

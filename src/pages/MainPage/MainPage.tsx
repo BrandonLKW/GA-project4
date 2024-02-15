@@ -38,7 +38,7 @@ export default function MainPage({ planList } : MainPageProps){
         <div className="mainpage">
             <div className="mainpagecol1">
                 <MonthSpinner viewDate={viewDate} setViewDate={setViewDate}/>
-                <Button onClick={handleAddWorkoutButton}>Add Workout</Button>
+                <Button variant="contained" onClick={handleAddWorkoutButton}>Add Workout</Button>
                 <AddWorkoutModal planList={planList} addWorkout={addWorkout} showModal={showAddWorkoutButton} setShowModal={setShowAddWorkoutButton}/>
             </div>
             <div className="mainpagecol2">

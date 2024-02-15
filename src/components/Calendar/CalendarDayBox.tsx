@@ -5,13 +5,14 @@ import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
 import 'dayjs/locale/en-sg';
 import { getWorkoutsByDateRange, getWorkoutRoutinesByWorkout } from "../../util/workout-service";
+import { Typography } from "@mui/material";
 import PendingIcon from '@mui/icons-material/Pending';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Workout } from "../../../models/Workout";
 import { WorkoutRoutine } from "../../../models/WorkoutRoutine";
-import "./Calendar.css";
 import { Exercise } from "../../../models/Exercise";
 import ViewWorkoutModal from "../Modal/ViewWorkoutModal";
+import "./Calendar.css";
 
 type CalendarDayBoxProps = {
     date: Date;
@@ -67,18 +68,24 @@ export default function CalendarDayBox({ date } : CalendarDayBoxProps){
     }, [date]);
 
     const handleBoxClick = () => {
-        setShowWorkout(true);
+        if (workoutList?.length > 0){
+            setShowWorkout(true);
+        }
     }
 
     if (day === 0){
         return (<label className="hidden">empty</label>);
     } else{
         return (
-            <div>
-                <div onClick={handleBoxClick}>
-                    <h1>{day}</h1>
-                    {hasPending ? <PendingIcon/>:<></>}
-                    {hasCompleted ? <TaskAltIcon/>:<></>}
+            <div >
+                <div className="calendarDayBox" onClick={handleBoxClick}>
+                    <Typography className="calendarDayBoxTitle" variant="body1">{day}</Typography>
+                    <div className="calendarDayBoxComplete">
+                        {hasPending ? <PendingIcon />:<></>}
+                    </div>
+                    <div className="calendarDayBoxPending">
+                        {hasCompleted ? <TaskAltIcon />:<></>}
+                    </div>
                 </div>
                 <ViewWorkoutModal workoutList={workoutList} showModal={showWorkout} setShowModal={setShowWorkout}/>
             </div>

@@ -1,11 +1,26 @@
 .spinnerBody{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "text text"
+        "leftbtn rightbtn";
 }
 
-.spinnerButton{
-    background-color: rgba(240, 248, 255, 0);
-    font-size: 20px;
+.spinnerText{
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.spinnerLeftBtn{
+    grid-area: leftbtn;
+}
+
+.spinnerRightBtn{
+    grid-area: rightbtn;
 }
