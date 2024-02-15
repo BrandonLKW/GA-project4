@@ -74,8 +74,8 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
             <div className="exerciseAddBody">
                 <FormControl className="exerciseAddBodyItems" variant="standard">
                     <TextField label="Repetitions" name="reps" variant="outlined" value={workingRoutine.reps} onChange={handleTextChange}/>
-                    <TextField label="Durations" name="duration" variant="outlined" value={workingRoutine.duration} onChange={handleTextChange}/>
-                    <TextField label="Weight" name="weight" variant="outlined" value={workingRoutine.weight} onChange={handleTextChange}/>
+                    <TextField label="Duration (mins)" name="duration" variant="outlined" value={workingRoutine.duration} onChange={handleTextChange}/>
+                    <TextField label="Equipment Weight (kg)" name="weight" variant="outlined" value={workingRoutine.weight} onChange={handleTextChange}/>
                 </FormControl>
             </div>
             <div className="exerciseAddFooter">

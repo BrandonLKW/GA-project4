@@ -32,6 +32,7 @@ export default function MainPage({ planList } : MainPageProps){
             workout.user_id = user.user_id;
         }
         const response = await addWorkouts(newWorkoutList);
+        console.log("***************",response);
         if (response.status){
             //Confirmation msg
         }

@@ -100,25 +100,28 @@ const getDurationDataByFilters = async (req, res) => {
 
 const addWorkouts = async (req, res) => {
     try {
+        let success = true;
         for (const workout of req.body){
             const queryStr = "INSERT INTO workouts(workout_date, body_weight, status, notes, plan_name, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING workout_id;";
             const queryValues = [workout.workout_date_str, workout.body_weight, workout.status, workout.notes, workout.plan_name, workout.user_id];
             const response = await workoutdb.query(queryStr, queryValues);
             if (response?.rows[0]){
                 const newWorkoutId = response?.rows[0].workout_id;
-                let routineResponse = null;
                 for (const routine of workout.routineList){
                     const routineQueryStr = "INSERT INTO workout_routines(seq, reps, duration, weight, exercise_id, workout_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING wr_id";
                     const routineQueryValues = [routine.seq, routine.reps, routine.duration, routine.weight, routine.exercise_id, newWorkoutId];
-                    routineResponse = await workoutdb.query(routineQueryStr, routineQueryValues);
+                    const routineResponse = await workoutdb.query(routineQueryStr, routineQueryValues);
+                    if (!routineResponse){
+                        success = false;
+                    }
                 }
-                if (response?.rows[0]){
-                    res.status(201).json({"status": "completed"});
-                } 
             } else{
                 throw "Error adding Workout";
             }
         }
+        if (success){
+            res.status(201).json({ message: "completed"});
+        } 
     } catch (error) {
         res.status(500).json({ error });
     }

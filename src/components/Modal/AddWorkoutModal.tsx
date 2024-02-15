@@ -26,8 +26,8 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
     const [selectedPlanId, setSelectedPlanId] = useState<string>("");
     const [workoutStatus, setWorkoutStatus] = useState<string>("");
     const [bodyWeight, setBodyWeight] = useState<string>("");
-    const [startDate, setStartDate] = useState<Dayjs>(dayjs(new Date()));
-    const [endDate, setEndDate] = useState<Dayjs>(dayjs(new Date()));
+    const [startDate, setStartDate] = useState<Dayjs>(dayjs(new Date()).tz("Asia/Kuala_Lumpur").set("hour", 0).set("minute", 0).set("second", 0));
+    const [endDate, setEndDate] = useState<Dayjs>(dayjs(new Date()).tz("Asia/Kuala_Lumpur"));
     const workoutStatusList: string[] = ["Completed", "Planned"];
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
