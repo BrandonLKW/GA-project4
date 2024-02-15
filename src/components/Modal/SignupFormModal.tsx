@@ -40,7 +40,7 @@ export default function SignupFormModal({ showModal, setShowModal, setUser } : S
             let user = new User(formJson.name, formJson.email, formJson.password);
             const response = await signup(user);
             if (response?.user_id){
-                user = new User(response.name, response.email, undefined, 0, 0, false, response.user_id);
+                user = new User(response.name, response.email, undefined, 0, 0, response.is_admin, response.user_id);
                 setUser(user);
                 handleClose();
                 navigate("/main");

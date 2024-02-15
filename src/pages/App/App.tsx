@@ -7,6 +7,7 @@ import UserPage from '../UserPage/UserPage';
 import MainPage from "../MainPage/MainPage";
 import PlanPage from "../PlanPage/PlanPage";
 import MetricsPage from "../MetricsPage/MetricsPage";
+import ExercisePage from '../ExercisePage/ExercisePage';
 import { User } from "../../../models/User";
 import { Exercise } from "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/main" element={<MainPage planList={planList}/>}/>
           <Route path="/plan" element={<PlanPage planList={planList} setPlanList={setPlanList}/>}/>
           <Route path="/metrics" element={<MetricsPage />}/>
+          <Route path="/exercises" element={<ExercisePage />}/>
           {/* <Route path="*" element={<MainPage />}/> */}
         </Routes>
       </div>

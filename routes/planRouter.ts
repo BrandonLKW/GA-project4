@@ -18,5 +18,8 @@ planRouter.get("/exercises", planController.getAllExercises);
 planRouter.get("/exercises/groups", planController.getAllExerciseGroups);
 planRouter.post("/exercises/id", planController.getExerciseById);
 planRouter.post("/exercises/search", planController.getAllExerciseByFilter);
+planRouter.post("/exercises/add", planController.addExercise);
+planRouter.post("/exercises/update", planController.updateExercise);
+planRouter.post("/exercises/delete", planController.deleteExercise);    
 
 module.exports = planRouter;

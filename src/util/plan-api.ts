@@ -1,3 +1,4 @@
+import { Exercise } from "../../models/Exercise";
 import { Routine } from "../../models/Routine";
 
 const BASE_URL = "/api/plan";
@@ -141,3 +142,42 @@ export async function getAllExerciseByFilter(searchObj: object){
         throw new Error("Invalid Call");
     }
 }
+
+export async function addExercise(exercise: Exercise){
+    const res = await fetch(BASE_URL + "/exercises/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(exercise),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
+export async function updateExercise(exercise: Exercise){
+    const res = await fetch(BASE_URL + "/exercises/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(exercise),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}
+
+export async function deleteExercise(exercise_id: number){
+    const res = await fetch(BASE_URL + "/exercises/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"exercise_id": exercise_id}),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}    

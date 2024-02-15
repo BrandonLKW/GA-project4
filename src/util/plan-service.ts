@@ -1,5 +1,6 @@
 import * as planAPI from "./plan-api";
 import { Routine } from "../../models/Routine";
+import { Exercise } from "../../models/Exercise";
 
 export async function getAllTemplatePlans(){
     const res = await planAPI.getAllTemplatePlans();
@@ -53,5 +54,20 @@ export async function getExerciseById(exercise_id: number){
 
 export async function getAllExerciseByFilter(searchObj: object){
     const res = await planAPI.getAllExerciseByFilter(searchObj);
+    return res;
+}
+
+export async function addExercise(exercise: Exercise){
+    const res = await planAPI.addExercise(exercise);
+    return res;
+}
+
+export async function updateExercise(exercise: Exercise){
+    const res = await planAPI.updateExercise(exercise);
+    return res;
+}
+
+export async function deleteExercise(exercise_id: number){
+    const res = await planAPI.deleteExercise(exercise_id);
     return res;
 }

@@ -153,6 +153,42 @@ const getAllExerciseByFilter = async (req, res) => {
     }
 }
 
+const addExercise = async (req, res) => {
+    try {
+        const { name, muscle_group, description } = req.body;
+        const queryStr = "INSERT INTO exercises(name, muscle_group, description) VALUES ($1, $2, $3) RETURNING exercise_id; ";
+        const queryValues = [name, muscle_group, description];
+        const response = await plandb.query(queryStr, queryValues);
+        res.status(201).json(response.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const updateExercise = async (req, res) => {
+    try {
+        const { name, muscle_group, description, exercise_id } = req.body;
+        const queryStr = "UPDATE exercises SET name = $1, muscle_group = $2, description = $3 WHERE exercise_id = $4 RETURNING exercise_id";
+        const queryValues = [name, muscle_group, description, exercise_id];
+        const response = await plandb.query(queryStr, queryValues);
+        res.status(201).json(response.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
+const deleteExercise = async (req, res) => {
+    try {
+        const { exercise_id } = req.body;
+        const queryStr = "DELETE FROM exercises WHERE exercise_id = $1 ";
+        const queryValues = [exercise_id];
+        const response = await plandb.query(queryStr, queryValues);
+        res.status(201).json(response.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 
 module.exports = {
     getAllTemplatePlans, 
@@ -166,4 +202,7 @@ module.exports = {
     getAllExerciseGroups, 
     getExerciseById, 
     getAllExerciseByFilter,
+    addExercise, 
+    updateExercise, 
+    deleteExercise
 };

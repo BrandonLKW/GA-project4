@@ -1,10 +1,13 @@
 import * as React from "react";
+import { useContext } from "react";
+import { UserContext } from "../../pages/App/App";
 import { useNavigate } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar, Tooltip, IconButton, Typography, Menu, MenuItem, Container } from "@mui/material"
 import image from "../../img/polite_cat.jpg";
 import { User } from "../../../models/User";
 
 const pages = ['Home', 'Plans', 'Metrics'];
+const adminPages = ['Exercises'];
 const settings = ['Manage Account', 'Logout'];
 //https://stackoverflow.com/questions/44321326/property-value-does-not-exist-on-type-eventtarget-in-typescript
 
@@ -13,6 +16,7 @@ type NavBarProps = {
 };
 
 export default function NavBar({ setUser }: NavBarProps){
+    const user = useContext(UserContext);
     const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -48,6 +52,9 @@ export default function NavBar({ setUser }: NavBarProps){
                 break;
             case "MANAGE ACCOUNT":
                 navigate("/account");
+                break;
+            case "EXERCISES":
+                navigate("/exercises");
                 break;
             case "LOGOUT":
                 setUser(new User());
@@ -91,9 +98,15 @@ export default function NavBar({ setUser }: NavBarProps){
                             }}>
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                <Typography textAlign="center">{page}</Typography>
+                                    <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
+                            {user.is_admin 
+                            ? adminPages.map((page) => (
+                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <Typography textAlign="center">{page}</Typography>
+                                </MenuItem>)) 
+                            : null}
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -105,6 +118,15 @@ export default function NavBar({ setUser }: NavBarProps){
                                 {page}
                             </Button>
                         ))}
+                        {user.is_admin 
+                        ? adminPages.map((page) => (
+                            <Button
+                                key={page}
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}>
+                                {page}
+                            </Button>)) 
+                        : null}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
@@ -130,7 +152,7 @@ export default function NavBar({ setUser }: NavBarProps){
                             >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">{setting}</Typography>
+                                    <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
