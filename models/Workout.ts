@@ -1,7 +1,14 @@
+import dayjs, { Dayjs } from "dayjs";
+import * as utc from "dayjs/plugin/utc";
+import * as timezone from "dayjs/plugin/timezone";
 import { WorkoutRoutine } from "./WorkoutRoutine";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export class Workout {
-    workout_date: Date = new Date();
+    workout_date: Dayjs = dayjs(new Date()).tz("Asia/Kuala_Lumpur");
+    workout_date_str: string = '';
     body_weight: number = 0;
     status: string = "";
     notes: string = "";
@@ -11,7 +18,7 @@ export class Workout {
     routineList: WorkoutRoutine[] = [];
     display_workout: boolean = false;
 
-    constructor(workout_date?: Date, body_weight?:number, status?:string, notes?:string, plan_name?:string, workout_id?: number, user_id?: number){
+    constructor(workout_date?: Dayjs, body_weight?:number, status?:string, notes?:string, plan_name?:string, workout_id?: number, user_id?: number){
         if (workout_date){
             this.workout_date = workout_date;
         }

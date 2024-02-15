@@ -8,14 +8,19 @@ import AddWorkoutModal from "../../components/Modal/AddWorkoutModal";
 import { Plan } from "../../../models/Plan";
 import { Workout } from "../../../models/Workout";
 import "./MainPage.css";
+import dayjs, { Dayjs } from "dayjs";
+import * as utc from "dayjs/plugin/utc";
+import * as timezone from "dayjs/plugin/timezone";
 
 type MainPageProps = {
     planList: Plan[];
 };
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function MainPage({ planList } : MainPageProps){
     const [showAddWorkoutButton, setShowAddWorkoutButton] = useState<boolean>(false);
-    const [viewDate, setViewDate] = useState<Date>(new Date());
+    const [viewDate, setViewDate] = useState<Dayjs>(dayjs(new Date()));
     const user = useContext(UserContext);
 
     const handleAddWorkoutButton = () => {
@@ -31,6 +36,7 @@ export default function MainPage({ planList } : MainPageProps){
             //Confirmation msg
         }
         setShowAddWorkoutButton(false);
+        console.log("*********", newWorkoutList[0].workout_date);
         setViewDate(newWorkoutList[0].workout_date); //set calendar view to first date to refresh components
     };
 

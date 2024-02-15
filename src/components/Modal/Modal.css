@@ -1,33 +1,32 @@
 .addNewWorkout {
     display: grid;
-    height: 100vh;
-    max-height: 100vh;
+    height: 60vh;
+    max-height: 60vh;
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr;
     grid-template-areas:
-        "plans routines"
-        "dates routines";
+        "info routines";
     grid-gap: 3px;
 }
 
-.addNewWorkoutPlans {
-    grid-area: plans;
+.addNewWorkoutInfo {
+    grid-area: info;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    align-content: center;
+    gap: 25px;
+    padding-right: 25px;
+    margin-top: 5%;
 }
 
 .addNewWorkoutRoutines {
     grid-area: routines;
-    overflow: auto;
-}
-
-.addNewWorkoutDates {
-    grid-area: dates;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    gap: 15px;
+    margin-top: 5%;
+    overflow: auto;
 }
 
 .viewWorkout {

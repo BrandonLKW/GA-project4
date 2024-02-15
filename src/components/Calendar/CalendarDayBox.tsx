@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../pages/App/App";
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
 import 'dayjs/locale/en-sg';
@@ -15,7 +15,7 @@ import ViewWorkoutModal from "../Modal/ViewWorkoutModal";
 import "./Calendar.css";
 
 type CalendarDayBoxProps = {
-    date: Date;
+    date: Dayjs;
 };
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -26,14 +26,17 @@ export default function CalendarDayBox({ date } : CalendarDayBoxProps){
     const [hasCompleted, setHasCompleted] = useState<boolean>(false);
     const [workoutList, setWorkoutList] = useState<Workout[]>([]);
     const user = useContext(UserContext);
-    const day = date.getTime() === 0 ? 0 : date.getDate();
+    const day = date.toDate().getTime() === 0 ? 0 : date.date();
     
     useEffect(() => {
         const loadDayInfo = async () => {
+            if (date.toDate().getTime() === 0){
+                return;
+            }
             setHasCompleted(false);
             setHasPending(false);
-            const startdate = dayjs(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)).tz("Asia/Kuala_Lumpur"); //0000HRS
-            const enddate = dayjs(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)).tz("Asia/Kuala_Lumpur"); //2359HRS
+            const startdate = date.tz("Asia/Kuala_Lumpur").set("hour", 0).set("minute", 0).set("second", 0); //0000HRS
+            const enddate = date.tz("Asia/Kuala_Lumpur").tz("Asia/Kuala_Lumpur").set("hour", 23).set("minute", 59).set("second", 59); //2359HRS
             const response = await getWorkoutsByDateRange(user.user_id, startdate.format("YYYY-MM-DD"), enddate.format("YYYY-MM-DD"));
             if (response){
                 const newWorkoutList = [];
@@ -48,6 +51,7 @@ export default function CalendarDayBox({ date } : CalendarDayBoxProps){
                         default:
                             break;
                     }
+
                     const newWorkout = new Workout(row.workout_date, row.body_weight, row.status, row.notes, row.plan_name, row.workout_id);
                     const checkWorkoutRoutine = await getWorkoutRoutinesByWorkout(row.workout_id);
                     

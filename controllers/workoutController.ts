@@ -102,7 +102,7 @@ const addWorkouts = async (req, res) => {
     try {
         for (const workout of req.body){
             const queryStr = "INSERT INTO workouts(workout_date, body_weight, status, notes, plan_name, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING workout_id;";
-            const queryValues = [workout.workout_date, workout.body_weight, workout.status, workout.notes, workout.plan_name, workout.user_id];
+            const queryValues = [workout.workout_date_str, workout.body_weight, workout.status, workout.notes, workout.plan_name, workout.user_id];
             const response = await workoutdb.query(queryStr, queryValues);
             if (response?.rows[0]){
                 const newWorkoutId = response?.rows[0].workout_id;
@@ -113,10 +113,8 @@ const addWorkouts = async (req, res) => {
                     routineResponse = await workoutdb.query(routineQueryStr, routineQueryValues);
                 }
                 if (response?.rows[0]){
-                    res.json({"status": "completed"});
-                } else{
-                    throw "Error adding WorkoutRoutines";
-                }
+                    res.status(201).json({"status": "completed"});
+                } 
             } else{
                 throw "Error adding Workout";
             }

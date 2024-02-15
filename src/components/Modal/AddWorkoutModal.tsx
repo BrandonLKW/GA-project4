@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, MenuItem, TextField, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { Alert, Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, MenuItem, TextField, Select, SelectChangeEvent, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs';
+import * as utc from "dayjs/plugin/utc";
+import * as timezone from "dayjs/plugin/timezone";
 import { Plan } from "../../../models/Plan";
 import { Workout } from "../../../models/Workout";
 import { WorkoutRoutine } from "../../../models/WorkoutRoutine";
@@ -14,8 +16,12 @@ type AddWorkoutModalProps = {
     showModal: boolean;
     setShowModal: (show: boolean) => void;
 };
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function AddWorkoutModal({ planList, addWorkout, showModal, setShowModal } : AddWorkoutModalProps){
+    const [showError, setShowError] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [selectedPlan, setSelectedPlan] = useState<Plan>(new Plan());
     const [selectedPlanId, setSelectedPlanId] = useState<string>("");
     const [workoutStatus, setWorkoutStatus] = useState<string>("");
@@ -26,21 +32,28 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setShowError(false);
+        setErrorMessage("");
+        //basic input checks
+        if (endDate.isBefore(startDate)){
+            setShowError(true);
+            setErrorMessage("End Date cannot be before Start Date.");
+            return;
+        }
         const newWorkoutList = [];
         //Based on date range, create individual workout rows
-        let currentDate = new Date(startDate.toDate().getTime());
-        currentDate.setHours(0);
-        currentDate.setMinutes(0);
-        while (currentDate.getTime() <= endDate.toDate().getTime()){
-            const newWorkout = new Workout(new Date(currentDate.getTime()), parseFloat(bodyWeight), workoutStatus, "", selectedPlan.name);
+        let currentDate = dayjs(startDate).tz("Asia/Kuala_Lumpur").set("hour", 0).set("minute", 0).set("second", 0);
+        while (!currentDate.isAfter(endDate.tz("Asia/Kuala_Lumpur").set("hour", 0).set("minute", 0).set("second", 0))){
+            const newWorkout = new Workout(currentDate, parseFloat(bodyWeight), workoutStatus, "", selectedPlan.name);
             const newWorkoutRoutineList = [];
             for (const routine of selectedPlan.routineList){
                 const newWorkoutRoutine = new WorkoutRoutine(routine.seq, routine.reps, routine.duration, routine.weight, routine.exercise_id);
                 newWorkoutRoutineList.push(newWorkoutRoutine);
             }
             newWorkout.routineList = newWorkoutRoutineList;
+            newWorkout.workout_date_str = currentDate.tz("Asia/Kuala_Lumpur").format("YYYY-MM-DD");
             newWorkoutList.push(newWorkout);
-            currentDate.setDate(currentDate.getDate() + 1);
+            currentDate = currentDate.add(1, "day");
         }
         addWorkout(newWorkoutList);
     }
@@ -76,9 +89,9 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
                 component: 'form',
                 onSubmit: handleSubmit
                 }}>
-                <DialogTitle>Add New Workout</DialogTitle>
+                <DialogTitle>Add New Workout to Calendar Schedule</DialogTitle>
                 <DialogContent className="addNewWorkout">
-                    <div className="addNewWorkoutPlans">
+                    <div className="addNewWorkoutInfo">
                         <FormControl variant="standard">
                             <InputLabel id="plan-label">Plan</InputLabel>
                             <Select 
@@ -100,20 +113,11 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
                             </Select>
                         </FormControl>
                         <TextField label="Track Body Weight (kg)" variant="outlined" value={bodyWeight} disabled={workoutStatus !== "Completed"} onChange={handleWeightChange}/>
-                    </div>
-                    {selectedPlan.plan_id > 0 
-                    ? 
-                    <div className="addNewWorkoutRoutines">
-                        <Typography>Routines:</Typography>
-                        {selectedPlan?.routineList?.map((routine) => (<Typography>{routine.exercise.name}</Typography>))}
-                    </div> 
-                    : 
-                    <></>}
-                    <div className="addNewWorkoutDates">
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 label="Start Date"
-                                value={startDate}
+                                value={startDate} 
+                                format="DD-MM-YYYY" 
                                 onChange={(newValue) => {
                                     if (newValue){
                                         setStartDate(newValue);
@@ -121,7 +125,8 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
                                 }}/>
                             <DatePicker
                                 label="End Date"
-                                value={endDate}
+                                value={endDate} 
+                                format="DD-MM-YYYY" 
                                 onChange={(newValue) => {
                                     if (newValue){
                                         setEndDate(newValue);
@@ -129,11 +134,22 @@ export default function AddWorkoutModal({ planList, addWorkout, showModal, setSh
                                 }}/>
                         </LocalizationProvider>
                     </div>
+                    {selectedPlan.plan_id > 0 
+                    ? 
+                    <div className="addNewWorkoutRoutines">
+                        <Typography>Routines:</Typography>
+                        {selectedPlan?.routineList?.map((routine) => (<Typography>- {routine.exercise.name}</Typography>))}
+                    </div> 
+                    : 
+                    <></>}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
                     <Button type="submit">Add Workout</Button>
                 </DialogActions>
+                <Alert variant="outlined" severity="error" sx={{display: showError ? "" : "none"}}>
+                    {errorMessage}
+                </Alert>
             </Dialog>
         </>
     );

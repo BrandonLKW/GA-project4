@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 import CalendarDayBox from "./CalendarDayBox";
 import "./Calendar.css";
+import dayjs, { Dayjs } from 'dayjs';
+import * as utc from "dayjs/plugin/utc";
+import * as timezone from "dayjs/plugin/timezone";
 
 type CalendarProps = {
-    viewDate: Date;
+    viewDate: Dayjs;
 };
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function Calendar({ viewDate } : CalendarProps){
-    const [calendarDays, setCalendarDays] = useState<Date[]>([]);
+    const [calendarDays, setCalendarDays] = useState<Dayjs[]>([]);
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     
     useEffect(() => {
         const newCalendarDaysList = [];
         //Load initial list based on current date
-        const firstDayOfMonthIndex = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay(); //0 -> Sun
-        const numOfDaysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate(); //https://stackoverflow.com/questions/1184334/get-number-days-in-a-specified-month-using-javascript
+        const firstDayOfMonthIndex = viewDate.startOf("month").day(); //0 -> Sun
+        const numOfDaysInMonth = viewDate.daysInMonth(); 
         //Determine initial place in first row
         for (let i = 0; i < firstDayOfMonthIndex; i++){
-            newCalendarDaysList.push(new Date(0));
+            newCalendarDaysList.push(dayjs(new Date(0)));
         }
         //Populate based on days in the month
-        for (let i = 1; i <= numOfDaysInMonth; i++){
-            const dayDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), i);
+        let runningDate = viewDate.startOf("month");
+        for (let i = 0; i < numOfDaysInMonth; i++){
+            const dayDate = runningDate.add(i, "day");
             newCalendarDaysList.push(dayDate);
         }
         setCalendarDays(newCalendarDaysList);
