@@ -124,6 +124,22 @@ const addWorkouts = async (req, res) => {
     }
 }
 
+const updateWorkout = async (req, res) => {
+    try {
+        const { body_weight, status, workout_id } = req.body;
+        const queryStr = "UPDATE workouts SET body_weight = $1, status = $2 WHERE workout_id = $3 RETURNING workout_id";
+        const queryValues = [body_weight, status, workout_id];
+        const response = await workoutdb.query(queryStr, queryValues);
+        if (response?.rows[0]){
+            res.status(201).json(response.rows[0]);
+        } else{
+            res.status(500).json({ message: "No Rows found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
+
 module.exports = {
     getWorkoutsByDateRange,
     getWorkoutRoutinesByWorkout,
@@ -131,4 +147,5 @@ module.exports = {
     getExerciseDataByFilters,
     getDurationDataByFilters,
     addWorkouts,
+    updateWorkout,
 };

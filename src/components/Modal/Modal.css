@@ -31,8 +31,8 @@
 
 .viewWorkout {
     display: grid;
-    height: 100vh;
-    max-height: 100vh;
+    height: 60vh;
+    max-height: 60vh;
     width: 100%;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 2fr;
@@ -44,20 +44,27 @@
 
 .viewWorkoutPlans {
     grid-area: plans;
+    display: flex;
+    flex-direction: column;
+    padding-right: 25px;
 }
 
 .viewWorkoutRoutinesTitle {
     grid-area: routinesTitle;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    overflow: auto;
+    gap: 25px;
+    margin-top: 5%;
+    justify-content: center;
 }
 
 .viewWorkoutRoutinesBody {
     grid-area: routinesBody;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     overflow: auto;
+}
+
+.viewWorkoutRoutinesBodyItem {
+    margin-top: 5%;
 }

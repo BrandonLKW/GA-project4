@@ -79,3 +79,16 @@ export async function addWorkouts(workout: Workout[]){
         throw new Error("Invalid Call");
     }
 }
+
+export async function updateWorkout(workout: Workout){
+    const res = await fetch(BASE_URL + "/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(workout),
+    })
+    if (res.ok) {
+        return res.json();
+    } else {
+        throw new Error("Invalid Call");
+    }
+}

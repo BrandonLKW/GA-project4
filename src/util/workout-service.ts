@@ -30,3 +30,8 @@ export async function addWorkouts(workout: Workout[]){
     const res = await workoutAPI.addWorkouts(workout);
     return res;
 }
+
+export async function updateWorkout(workout: Workout){
+    const res = await workoutAPI.updateWorkout(workout);
+    return res;
+}
