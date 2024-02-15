@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, CircularProgress, FormControl, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Button, CircularProgress, FormControl, InputLabel, List, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { getAllExerciseGroups, getAllExerciseByFilter } from "../../util/plan-service";
 import { Exercise } from  "../../../models/Exercise";
 import { Routine } from  "../../../models/Routine";
@@ -73,28 +73,32 @@ export default function ExerciseSearch({ setSelectedExercise, setSelectedRoutine
 
     return (
         <div className="exerciseSearch">
-            <h1 className="exerciseSearchHeader">Search for Exercises</h1>
-            <h2 className="exerciseSearchSubHeader">Filter By:</h2><br/>
+            <Typography className="exerciseSearchHeader" variant="h4">Search for Exercises</Typography>
+            <Typography className="exerciseSearchSubHeader" variant="h5">Use the filters below to search for exercises to add</Typography>
             <div className="exerciseSearchBody">
-                <FormControl variant="standard">
-                    <InputLabel id="group-label">Muscle Group</InputLabel>
-                    <Select 
-                        labelId="group-label"
-                        value={searchMuscleGroup}
-                        onChange={handleMuscleGroupChange}>
-                        {muscleGroupList?.map((group) => (<MenuItem key={group} value={group}>{group}</MenuItem>))}
-                    </Select>
-                    <TextField label="Search by Name..." variant="outlined" value={searchWildcard} onChange={handleWildcardChange}/>
-                </FormControl>
+                <div className="exerciseSearchBodySearch">
+                    <FormControl variant="standard">
+                        <InputLabel id="group-label">Muscle Group</InputLabel>
+                        <Select 
+                            labelId="group-label"
+                            value={searchMuscleGroup}
+                            onChange={handleMuscleGroupChange}>
+                            {muscleGroupList?.map((group) => (<MenuItem key={group} value={group}>{group}</MenuItem>))}
+                        </Select>
+                        <TextField label="Search by Name..." variant="outlined" value={searchWildcard} onChange={handleWildcardChange}/>
+                    </FormControl>
+                </div>
+                <div className="exerciseSearchBodyButtons">
+                    <Button variant="contained" onClick={resetSearchFilters}>Reset</Button>
+                    <Button variant="contained" onClick={searchFilters}>Search</Button>
+                </div>
             </div>
-            <div className="exerciseSearchBody2">
-                <Button onClick={resetSearchFilters}>Reset</Button>
-                <Button onClick={searchFilters}>Search</Button>
-            </div>
+            {showLoading ? 
             <div className="exerciseSearchFooter">
-                {showLoading ? 
-                <CircularProgress /> 
-                : 
+                <CircularProgress />
+            </div>
+            : 
+            <div className="exerciseSearchFooter">
                 <List>
                     {exerciseList?.map((exercise) => (
                     <List key={exercise.exercise_id}>
@@ -104,8 +108,8 @@ export default function ExerciseSearch({ setSelectedExercise, setSelectedRoutine
                         </ListItemButton>
                     </List>
                     ))}
-                </List>}
-            </div>
+                </List>
+            </div>}
         </div>
     );
 }

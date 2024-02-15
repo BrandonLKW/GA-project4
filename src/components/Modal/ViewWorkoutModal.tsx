@@ -5,7 +5,7 @@ import { updateWorkout } from "../../util/workout-service";
 import PendingIcon from '@mui/icons-material/Pending';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Workout } from "../../../models/Workout";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import * as utc from "dayjs/plugin/utc";
 import * as timezone from "dayjs/plugin/timezone";
 import "./Modal.css";

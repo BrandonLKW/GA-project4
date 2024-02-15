@@ -1,37 +1,71 @@
+.exerciseAddEmpty {
+  height: 90vh;
+  max-height: 90vh;
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap:50px;
+}
+
+.exerciseAddEmptyItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  align-items: center;
+}
+
 .exerciseAdd {
   display: grid;
-  height: 100vh;
-  max-height: 100vh;
-  width: 100%;
+  height: 90vh;
+  max-height: 90vh;
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 0.5fr 3fr 1fr;
+  grid-template-rows: 1fr 1fr 3fr 1fr;
   grid-template-areas:
     "header" 
     "subheader"
-    "description"
     "body"
     "footer";
-  grid-gap: 3px;
+  grid-gap: 5px;
 }
 
 .exerciseAddHeader {
   grid-area: header;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .exerciseAddSubHeader{
   grid-area: subheader;
-}
-
-.exerciseAddDescription{
-  grid-area: description;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .exerciseAddBody {
   grid-area: body;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.exerciseAddBodyItems {
+  margin-top: 5px;
+  gap: 5px;
 }
 
 .exerciseAddFooter {
   grid-area: footer;
   display: flex;
+  flex-direction: row;
 }

@@ -2,19 +2,29 @@
     display: grid;
     height: 100vh;
     width: 100%;
-    grid-template-columns: 1fr 2fr 2fr;
+    max-height: 100vh;
+    max-width: 90vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    grid-template-columns: 1fr 2fr 1.5fr;
     grid-template-rows: 1fr;
     grid-template-areas:
       "col1 col2 col3";
     grid-gap: 3px;
+    padding-top: 2vh;
   }
 
 .planPageCol1 {
-    grid-area: col1;
+  grid-area: col1;
 }
 
 .planPageCol2 {
-    grid-area: col2;
+  grid-area: col2;
+  border-style: solid;
+  border-color: blueviolet;
+  border-width: 2px;
+  border-top:  0px;
+  border-bottom: 0px;
 }
 
 .planPageCol3 {

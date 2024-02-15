@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../pages/App/App";
-import { Button, Collapse, List, ListItemButton, ListItemText } from "@mui/material";
+import { Button, Collapse, List, ListItemButton, ListItemText, Typography } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material"
 import { addUserPlan,  } from "../../util/plan-service";
 import { Plan } from  "../../../models/Plan";
@@ -60,7 +60,7 @@ export default function ExercisePlan({ planList, setPlanList, setSelectedExercis
 
     return (
         <div className="exercisePlan">
-            <h1 className="exerciseAddHeader">Plans</h1>
+            <Typography className="exerciseAddHeader" variant="h4">Plans</Typography>
             <div className="exerciseAddBody">
                 <List>
                 {planList.map((plan) => (
@@ -88,8 +88,9 @@ export default function ExercisePlan({ planList, setPlanList, setSelectedExercis
                 </List>
             </div>
             <div className="exerciseAddFooter">
-                <Button>Delete</Button>
-                <Button onClick={handleAddButtonClick}>Add</Button>
+                <hr/>
+                <Button variant="contained">Delete</Button>
+                <Button variant="contained" onClick={handleAddButtonClick}>Add</Button>
                 <AddPlanModal addPlan={addPlan} showModal={showAddModal} setShowModal={setShowAddModal}/>
             </div>
         </div>

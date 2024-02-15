@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, FormControl, TextField } from "@mui/material";
+import { Button, FormControl, TextField, Typography } from "@mui/material";
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { Exercise } from  "../../../models/Exercise";
 import { Routine } from "../../../models/Routine";
 import { Plan } from "../../../models/Plan";
@@ -52,25 +54,33 @@ export default function ExerciseAdd({ selectedExercise, selectedRoutine, selecte
         <>
         {(selectedExercise.exercise_id === 0 && selectedRoutine.routine_id === 0) 
         ? 
-        <div>
-            <h1>Select an Exercise to Add ---&gt;</h1> 
-            <h1>&lt;--- Or Select a Routine to Update</h1> 
+        <div className="exerciseAddEmpty">
+            <div className="exerciseAddEmptyItem">
+                <ArrowCircleLeftIcon />
+                <Typography variant="h4">Select an Exercise to Add</Typography>
+            </div>
+            <div className="exerciseAddEmptyItem">
+                <Typography variant="h4">Select a Routine to Update</Typography>
+                <ArrowCircleRightIcon />
+            </div>
         </div>
         : 
         <div className="exerciseAdd">
-            <h1 className="exerciseAddHeader">{action} to Plan: {selectedPlan.name}</h1>
-            <h2 className="exerciseAddSubHeader">{workingRoutine.exercise.name}</h2>
-            <label className="exerciseAddDescription">{workingRoutine.exercise.description}</label>
+            <Typography className="exerciseAddHeader" variant="h4">{action} to Plan: {selectedPlan.name}</Typography>
+            <div className="exerciseAddSubHeader">
+                <Typography variant="h5">{workingRoutine.exercise.name}</Typography>
+                <Typography variant="h6">{workingRoutine.exercise.description}</Typography>
+            </div>
             <div className="exerciseAddBody">
-                <FormControl variant="standard">
+                <FormControl className="exerciseAddBodyItems" variant="standard">
                     <TextField label="Repetitions" name="reps" variant="outlined" value={workingRoutine.reps} onChange={handleTextChange}/>
                     <TextField label="Durations" name="duration" variant="outlined" value={workingRoutine.duration} onChange={handleTextChange}/>
                     <TextField label="Weight" name="weight" variant="outlined" value={workingRoutine.weight} onChange={handleTextChange}/>
                 </FormControl>
             </div>
             <div className="exerciseAddFooter">
-                <Button onClick={handleResetButtonClick}>Clear</Button>
-                <Button onClick={handleAddButtonClick}>{action.toUpperCase()}</Button>
+                <Button variant="contained" onClick={handleResetButtonClick}>Clear</Button>
+                <Button variant="contained" onClick={handleAddButtonClick}>{action.toUpperCase()}</Button>
             </div>
         </div>}
         </>
